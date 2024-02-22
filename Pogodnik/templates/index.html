@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выбор города и график температур</title>
+    <!-- Подключение Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Выберите город</h1>
+        <form id="temperatureForm" action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="city">Город:</label>
+                <select class="form-select" id="city" name="city">
+                    {% for city in cities %}
+                        <option value="{{ city.id }}">{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Показать температуру</button>
+        </form>
+
+        <!-- Контейнер для графика -->
+        <div class="mt-5">
+            <canvas id="temperatureChart"></canvas>
+        </div>
+    </div>
+    
+    <!-- Подключение скриптов Bootstrap и Chart.js -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- JavaScript-код для загрузки данных и отображения графика -->
+    <script>
+    document.getElementById('temperatureForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Отмена отправки формы по умолчанию
+        var cityId = document.getElementById('city').value; // Получение выбранного идентификатора города
+        loadTemperatureData(cityId); // Загрузка данных и отображение графика температур
+    });
+
+    function loadTemperatureData(cityId) {
+        // Отправка AJAX-запроса для получения данных о температуре
+        fetch('/temperature-chart/?city=' + cityId)
+            .then(response => response.json())
+            .then(data => {
+                // Создание графика с помощью Chart.js
+                var ctx = document.getElementById('temperatureChart').getContext('2d');
+                var temperatureChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: 'Температура в выбранном городе',
+                            data: data.data,
+                            borderColor: 'blue',
+                            backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: false
+                            }
+                        }
+                    }
+                });
+            });
+    }
+</script>
+</body>
+</html>
