@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Выбор города и график температур</title>
-    <!-- Подключение Bootstrap -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
@@ -23,17 +22,17 @@
             <button type="submit" class="btn btn-primary">Показать температуру</button>
         </form>
 
-        <!-- Контейнер для графика -->
+        
         <div class="mt-5">
             <canvas id="temperatureChart"></canvas>
         </div>
     </div>
     
-    <!-- Подключение скриптов Bootstrap и Chart.js -->
+    
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
-    <!-- JavaScript-код для загрузки данных и отображения графика -->
+ 
     <script>
     document.getElementById('temperatureForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Отмена отправки формы по умолчанию
